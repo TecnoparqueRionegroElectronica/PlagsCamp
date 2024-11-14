@@ -79,7 +79,7 @@ const LoginScreen = ({navigation}) =>{
         </View>
         <View style={styles.tituloStyle}>
             <View style={styles.containerSVG}>
-            <SvgIcon />
+            <SvgIcon/>
             </View>
             <Text style={styles.titulo}>INICIAR SESION</Text>
         </View>
