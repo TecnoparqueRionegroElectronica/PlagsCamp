@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, NativeBaseProvider, Image, Center, FormControl, Input, Button, ScrollView } from 'native-base';
+import { Box, NativeBaseProvider, Image, Center, FormControl, Input, Button, ScrollView, View } from 'native-base';
 import logo from "../assets/1.png"
 import plants from "../assets/plantas_login.png"
 import Typography from '../Components/Typography';
@@ -10,7 +10,7 @@ import colors from "../assets/colors/colors";
 import { Octicons } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get('window');
-const fontSizeFactor = width > 600 ? 0.02 : 0.043;
+const fontSizeFactor = width > 600 ? 0.02 : 0.037;
 const fontSizeFactor1 = width > 600 ? 0.02 : 0.057;
 const sizeCell = width > 600 ? 0.056 : 0.065;
 const sizeIcon = width > 600 ? 0.035 : 0.06;
@@ -46,54 +46,11 @@ const LoginScreen = ({ navigation }) => {
         }
         if (validate()) {
             setIsSending(true)
-            // try {
-            //     console.log(formValues.email)
-            //     console.log(formValues.password)
-            //     // const respuesta = await api.post(`${resources.auth}`, formValues)
-            //     // // toast.show({
-            //     // //     placement: "top",
-            //     // //     backgroundColor: "success.500",
-            //     // //     duration: 1000,
-            //     // //     render: () => (
-            //     // //         <Box
-            //     // //             bg="success.500"
-            //     // //             p={5}
-            //     // //             borderRadius="md"
-            //     // //             width="100%"
-            //     // //             mx="auto"
-            //     // //             _text={{ color: "white", textAlign: "center" }}
-            //     // //         >
-            //     // //             <Center>
-            //     // //                 <Typography size={width * 0.04} style={{ color: colors.white }}>Inicio de sesión exitoso</Typography>
-            //     // //             </Center>
-            //     // //         </Box>
-            //     // //     ),
-            //     // // });
-            //     // await AsyncStorage.setItem('token', respuesta.data.access)
-            //     // console.log(respuesta.data.access)
-            //     // // setTimeout(() => { navigation.navigate('home') }, 1100);
-            //     // navigation.navigate('home')
-            //     setFormValues({ email: '', password: '' })
-            //     setErrors({})
-
-            // } catch (error) {
-            //     if (error.response.status == 401) {
-            //         showToastError("Por favor ingresar las credenciales validas.")
-            //     } else {
-            //         showToastError("Error al iniciar sesión.")
-            //         if (error.response) {
-            //             console.error('Error status:', error.response.status);
-            //             console.error('Error data:', error.response.data);
-            //             console.error('Error headers:', error.response.headers);
-            //         } else if (error.request) {
-            //             console.error('Error request:', error.request);
-            //         } else {
-            //             console.error('Error message:', error.message);
-            //         }
-            //     }
-            // } finally {
-            //     setIsSending(false);
-            // }
+            console.log(formValues)
+            setFormValues({ email: '', password: '' })
+            setErrors({});
+            setIsSending(false)
+            navigation.navigate('Home')
         }
     };
 
@@ -102,7 +59,7 @@ const LoginScreen = ({ navigation }) => {
         <NativeBaseProvider>
             <SafeAreaProvider>
                 <SafeAreaView>
-                    <Box backgroundColor={"#F4F1DF"} height="full">
+                    <View backgroundColor={"#F4F1DF"} height="full">
                         <ScrollView>
                             <Image
                                 source={plants}
@@ -193,7 +150,7 @@ const LoginScreen = ({ navigation }) => {
                                             variant="unstyled"
                                             InputRightElement={
                                                 <Octicons name={showPassword ? 'eye' : 'eye-closed'} size={width * sizeIcon}
-                                                    color="black"
+                                                    color="#6a6f66"
                                                     style={{
                                                         marginRight: 18
                                                     }}
@@ -224,7 +181,7 @@ const LoginScreen = ({ navigation }) => {
                                 </Center>
                             </Center>
                         </ScrollView>
-                    </Box>
+                    </View>
                 </SafeAreaView>
             </SafeAreaProvider>
         </NativeBaseProvider>
