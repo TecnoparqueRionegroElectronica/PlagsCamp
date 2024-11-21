@@ -20,7 +20,7 @@ import * as NavigationBar from 'expo-navigation-bar';
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [fontsLoaded] = useFonts({ Questrial_400Regular });
+  const [fontsLoaded] = useFonts({ Questrial_400Regular,  Alice_400Regular});
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
       await SplashScreen.hideAsync();
