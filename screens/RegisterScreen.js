@@ -62,54 +62,6 @@ const RegisterScreen = ({ navigation }) => {
         }
         if (validate()) {
             setIsSending(true)
-            // try {
-            //     console.log(formValues.email)
-            //     console.log(formValues.password)
-            //     // const respuesta = await api.post(`${resources.auth}`, formValues)
-            //     // // toast.show({
-            //     // //     placement: "top",
-            //     // //     backgroundColor: "success.500",
-            //     // //     duration: 1000,
-            //     // //     render: () => (
-            //     // //         <Box
-            //     // //             bg="success.500"
-            //     // //             p={5}
-            //     // //             borderRadius="md"
-            //     // //             width="100%"
-            //     // //             mx="auto"
-            //     // //             _text={{ color: "white", textAlign: "center" }}
-            //     // //         >
-            //     // //             <Center>
-            //     // //                 <Typography size={width * 0.04} style={{ color: colors.white }}>Inicio de sesión exitoso</Typography>
-            //     // //             </Center>
-            //     // //         </Box>
-            //     // //     ),
-            //     // // });
-            //     // await AsyncStorage.setItem('token', respuesta.data.access)
-            //     // console.log(respuesta.data.access)
-            //     // // setTimeout(() => { navigation.navigate('home') }, 1100);
-            //     // navigation.navigate('home')
-            //     setFormValues({ email: '', password: '' })
-            //     setErrors({})
-
-            // } catch (error) {
-            //     if (error.response.status == 401) {
-            //         showToastError("Por favor ingresar las credenciales validas.")
-            //     } else {
-            //         showToastError("Error al iniciar sesión.")
-            //         if (error.response) {
-            //             console.error('Error status:', error.response.status);
-            //             console.error('Error data:', error.response.data);
-            //             console.error('Error headers:', error.response.headers);
-            //         } else if (error.request) {
-            //             console.error('Error request:', error.request);
-            //         } else {
-            //             console.error('Error message:', error.message);
-            //         }
-            //     }
-            // } finally {
-            //     setIsSending(false);
-            // }
         }
     };
 
@@ -124,8 +76,8 @@ const RegisterScreen = ({ navigation }) => {
                                 source={plants}
                                 alt="plantas"
                                 style={{
-                                    height: "22%",
-                                    width: "100%",
+                                    height: height * 0.17,
+                                    width: width,
                                     resizeMode: 'stretch',
                                     // backgroundColor: "#674636",
                                     marginRight: "2%"
@@ -136,8 +88,8 @@ const RegisterScreen = ({ navigation }) => {
                                     source={logo}
                                     alt="Logo1"
                                     style={{
-                                        height: "88",
-                                        width: "97",
+                                        height: height * 0.1,
+                                        width: width * 0.23,
                                         resizeMode: 'stretch',
                                         // backgroundColor: "#674636",
                                         marginRight: "2%"

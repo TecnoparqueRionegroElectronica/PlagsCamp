@@ -5,6 +5,11 @@ import logo from "../assets/logo.png"
 import plants from "../assets/plantas.png"
 import { Pressable } from 'native-base';
 import Typography from '../Components/Typography';
+import { Dimensions } from "react-native";
+
+const { width, height } = Dimensions.get('window');
+
+
 const StartScreen = ({ navigation }) => {
     return (
         <NativeBaseProvider>
@@ -12,8 +17,8 @@ const StartScreen = ({ navigation }) => {
                 <SafeAreaView>
                     <Box backgroundColor={"#F4F1DF"} height="full">
                         <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"}>
-                            <Box marginTop={"15%"}></Box>
-                            <Box position="relative" width="100%" height="47%">
+                            <Box marginTop={height * 0.15}></Box>
+                            <Box position="relative" width="100%" height={height * 0.38}>
                                 <Box
                                     backgroundColor="#6A9C89"
                                     position="absolute"
@@ -21,7 +26,7 @@ const StartScreen = ({ navigation }) => {
                                     left="0"
                                     right="0"
                                     transform={[{ translateY: -50 }]}
-                                    height="20%"
+                                    height={height * 0.1}
                                     width="100%"
                                     zIndex={1}
                                 />
@@ -30,7 +35,7 @@ const StartScreen = ({ navigation }) => {
                                         source={logo}
                                         alt="Logo"
                                         style={{
-                                            width: "81%",
+                                            width: width * 0.8,
                                             height: "100%",
                                             resizeMode: 'cover',
                                             zIndex: 2,
@@ -41,8 +46,8 @@ const StartScreen = ({ navigation }) => {
                             <Pressable _pressed={{ bg: 'rgba(106, 156, 137, 0.6)' }}
                                 onPress={() => navigation.navigate('Login')}
                                 style={{
-                                    width: "69%",
-                                    height: "10%",
+                                    width: width * 0.69,
+                                    height: height * 0.1,
                                     display: "flex",
                                     justifyContent: "center",
                                     alignItems: "center",
@@ -56,8 +61,8 @@ const StartScreen = ({ navigation }) => {
                             <Pressable _pressed={{ bg: 'rgba(106, 156, 137, 0.6)' }}
                                 onPress={() => navigation.navigate('Register')}
                                 style={{
-                                    width: "69%",
-                                    height: "10%",
+                                    width: width * 0.69,
+                                    height: height * 0.1,
                                     display: "flex",
                                     justifyContent: "center",
                                     alignItems: "center",
@@ -70,7 +75,7 @@ const StartScreen = ({ navigation }) => {
                         <Box position="absolute" bottom={0} left={0} right={0}>
                             <Image source={plants} alt="plantas"
                                 style={{
-                                    width: "99%",
+                                    width: width * 0.99,
                                     resizeMode: 'cover',
                                 }}
                             />

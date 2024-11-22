@@ -9,13 +9,15 @@ import { Dimensions } from "react-native";
 import colors from "../assets/colors/colors";
 import { Octicons } from "@expo/vector-icons";
 
+const { width, height } = Dimensions.get('window');
+
 const HomeScreen = ({ navigation }) => {
     return (
         <NativeBaseProvider>
             <SafeAreaProvider>
                 <SafeAreaView>
                     <View backgroundColor={"#F4F1DF"} height="full">
-                        <Box position="relative" width="100%" height="47%">
+                        <Box position="relative" width="100%" height={height * 0.47}>
                             <Image
                                 source={logo}
                                 alt="Logo1"
@@ -32,17 +34,23 @@ const HomeScreen = ({ navigation }) => {
                             />
                             <Box style={{
                                 top: "30%",
-                                left: "8%",
+                                left: "4%",
                                 position: "absolute",
                                 zIndex: 2,
+                                // backgroundColor: "#F4F1DF",
+                                // paddingVertical: 10,
+                                // overflow: "visible",
                             }}>
-                                <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
-                                    <Typography size={17} style={{
+                                <Box display={"flex"} flexDirection={"column"} alignItems={"center"} justifyContent={"space-around"}>
+                                    <Typography size={18} style={{
+                                        // paddingBottom: 8 
                                     }}>BIENVENIDO A</Typography>
                                     <Text style={{
                                         color: colors.brown,
                                         fontFamily: "Alice_400Regular",
-                                        fontSize: 24
+                                        fontSize: 28,
+                                        // fontWeight: "bold",
+                                        paddingTop: "1.4%"
                                     }}>PLAGSCAMP</Text>
                                 </Box>
                             </Box>
@@ -58,6 +66,17 @@ const HomeScreen = ({ navigation }) => {
                                     zIndex: 0
                                 }}
                             />
+                        </Box>
+                        <Box style={{
+                            backgroundColor: colors.brown,
+                            // display: "flex",
+                            flexDirection: "column",
+                            // alignItems: "center",
+                            // justifyContent: "center",
+                            paddingVertical: 15,
+                            paddingHorizontal: 2
+                        }}>
+                            <Typography size={19} style={{color: "white",textAlign: "center"}}>Elige la opción que deseas para ayudarte mitigar tu plaga</Typography>
                         </Box>
                     </View>
                 </SafeAreaView>
