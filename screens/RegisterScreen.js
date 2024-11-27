@@ -4,10 +4,9 @@ import logo from "../assets/1.png"
 import plants from "../assets/plantas_login.png"
 import Typography from '../Components/Typography';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { Pressable } from "native-base";
 import { _Text, Dimensions } from "react-native";
 import colors from "../assets/colors/colors";
-import { MaterialIcons, Octicons } from "@expo/vector-icons";
+import { Octicons } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get('window');
 const fontSizeFactor = width > 600 ? 0.02 : 0.037;
@@ -15,10 +14,34 @@ const fontSizeFactor1 = width > 600 ? 0.02 : 0.057;
 const sizeCell = width > 600 ? 0.056 : 0.047;
 const sizeIcon = width > 600 ? 0.035 : 0.06;
 
+const Plantas = React.memo(() => (
+    <Image
+        source={plants}
+        alt="plantas"
+        style={{
+            height: height * 0.17,
+            width: width,
+            resizeMode: 'stretch',
+            marginRight: "2%"
+        }}
+    />
+));
+const Logo = React.memo(() => (
+    <Image
+        source={logo}
+        alt="Logo1"
+        style={{
+            height: height * 0.1,
+            width: width * 0.23,
+            resizeMode: 'stretch',
+            marginRight: "2%"
+        }}
+    />
+));
+
 const RegisterScreen = ({ navigation }) => {
     const [formValues, setFormValues] = useState({ name: '', lastName: '', email: '', password: '', phone: '', rol: "" });
     const [errors, setErrors] = useState({ name: false, lastName: false, email: false, password: false, phone: false, rol: false });
-    const [selectedValue, setSelectedValue] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [isSending, setIsSending] = useState(false);
 
@@ -72,42 +95,12 @@ const RegisterScreen = ({ navigation }) => {
                 <SafeAreaView>
                     <Box backgroundColor={"#F4F1DF"} height="full">
                         <ScrollView>
-                            <Image
-                                source={plants}
-                                alt="plantas"
-                                style={{
-                                    height: height * 0.17,
-                                    width: width,
-                                    resizeMode: 'stretch',
-                                    // backgroundColor: "#674636",
-                                    marginRight: "2%"
-                                }}
-                            />
+                            <Plantas/>
                             <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} alignItems={"center"} mt={height * 0.002}>
-                                <Image
-                                    source={logo}
-                                    alt="Logo1"
-                                    style={{
-                                        height: height * 0.1,
-                                        width: width * 0.23,
-                                        resizeMode: 'stretch',
-                                        // backgroundColor: "#674636",
-                                        marginRight: "2%"
-                                    }}
-                                />
+                                <Logo/>
                                 <Typography size={38}>Registrate</Typography>
                             </Box>
                             <Center flex={1} px="6">
-                                {/* <Image
-                                    source={logo}
-                                    alt="Logo"
-                                    style={{
-                                        width: width * 0.9,
-                                        height: height * 0.5,
-                                        // resizeMode: 'contain',
-                                        // backgroundColor: "red"
-                                    }}
-                                /> */}
                                 <FormControl isRequired mt={height * 0.0008}>
                                     <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
                                         <Typography size={20} style={{ color: "#090000" }}>Nombre</Typography>
@@ -267,29 +260,24 @@ const RegisterScreen = ({ navigation }) => {
                                     }}>
                                         <Select
                                             selectedValue={formValues.rol}
-                                             variant="unstyled"
+                                            variant="unstyled"
                                             _selectedItem={{
                                                 bg: colors.green,
-                                                // style
                                                 endIcon: <CheckIcon size="5" />,
                                             }}
                                             style={{
                                                 color: 'white',
                                                 fontSize: width * fontSizeFactor
                                             }}
-                                            // _icon={{
-                                            //     color: 'blue',  // Cambiar el color de la flecha en el input
-                                            //     size: 6,         // Cambiar el tamaño de la flecha
-                                            //   }}
                                             _icon={{
-                                                display: 'none'  // Ocultar la flecha predeterminada
-                                              }}
-                                            
+                                                display: 'none'
+                                            }}
+
                                             isReadOnly
                                             onValueChange={(text) => setFormValues({ ...formValues, rol: text })}
                                         >
-                                            <Select.Item label="Option 1" value="option1"/>
-                                            <Select.Item label="Option 2" value="option2"/>
+                                            <Select.Item label="Option 1" value="option1" />
+                                            <Select.Item label="Option 2" value="option2" />
                                         </Select>
                                     </Box>
                                 </FormControl>
@@ -299,7 +287,6 @@ const RegisterScreen = ({ navigation }) => {
                                             width: width * 0.55,
                                             backgroundColor: colors.green,
                                             height: height * 0.08,
-                                            opacity: isSending ? 0.5 : 1,
                                             display: "flex",
                                             flexDirection: "column",
                                             alignItems: "center",
@@ -308,6 +295,7 @@ const RegisterScreen = ({ navigation }) => {
                                         }}
                                         onPress={handleSubmit}
                                         disabled={isSending}
+                                        _pressed={{ opacity: isSending ? 0.8 : 1, transform: [{ scale: 0.97 }] }}
                                     >
                                         <Typography size={width * fontSizeFactor1}>Registrate</Typography>
                                     </Button>

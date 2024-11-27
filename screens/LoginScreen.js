@@ -4,7 +4,6 @@ import logo from "../assets/1.png"
 import plants from "../assets/plantas_login.png"
 import Typography from '../Components/Typography';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { Pressable } from "native-base";
 import { Dimensions } from "react-native";
 import colors from "../assets/colors/colors";
 import { Octicons } from "@expo/vector-icons";
@@ -14,6 +13,32 @@ const fontSizeFactor = width > 600 ? 0.02 : 0.037;
 const fontSizeFactor1 = width > 600 ? 0.02 : 0.057;
 const sizeCell = width > 600 ? 0.056 : 0.065;
 const sizeIcon = width > 600 ? 0.035 : 0.06;
+
+
+const Plantas = React.memo(() => (
+    <Image
+        source={plants}
+        alt="plantas"
+        style={{
+            height: "25%",
+            width: "100%",
+            resizeMode: 'stretch',
+            marginRight: "2%"
+        }}
+    />
+));
+const Logo = React.memo(() => (
+    <Image
+        source={logo}
+        alt="Logo1"
+        style={{
+            height: "88",
+            width: "97",
+            resizeMode: 'stretch',
+            marginRight: "2%"
+        }}
+    />
+));
 
 const LoginScreen = ({ navigation }) => {
     const [formValues, setFormValues] = useState({ email: '', password: '' });
@@ -61,42 +86,12 @@ const LoginScreen = ({ navigation }) => {
                 <SafeAreaView>
                     <View backgroundColor={"#F4F1DF"} height="full">
                         <ScrollView>
-                            <Image
-                                source={plants}
-                                alt="plantas"
-                                style={{
-                                    height: "25%",
-                                    width: "100%",
-                                    resizeMode: 'stretch',
-                                    // backgroundColor: "#674636"
-                                    marginRight: "2%"
-                                }}
-                            />
+                            <Plantas />
                             <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} alignItems={"center"} mt={height * 0.05}>
-                                <Image
-                                    source={logo}
-                                    alt="Logo1"
-                                    style={{
-                                        height: "88",
-                                        width: "97",
-                                        resizeMode: 'stretch',
-                                        // backgroundColor: "#674636"
-                                        marginRight: "2%"
-                                    }}
-                                />
+                                <Logo/>
                                 <Typography size={38}>Iniciar sesión</Typography>
                             </Box>
                             <Center flex={1} px="6" py="7">
-                                {/* <Image
-                                    source={logo}
-                                    alt="Logo"
-                                    style={{
-                                        width: width * 0.9,
-                                        height: height * 0.5,
-                                        // resizeMode: 'contain',
-                                        // backgroundColor: "red"
-                                    }}
-                                /> */}
                                 <FormControl isRequired mt={height * 0.05}>
                                     <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
                                         <Typography size={22} style={{ color: "#090000" }}>Correo Eléctronico</Typography>
@@ -166,7 +161,6 @@ const LoginScreen = ({ navigation }) => {
                                             width: width * 0.55,
                                             backgroundColor: colors.green,
                                             height: height * 0.08,
-                                            opacity: isSending ? 0.5 : 1,
                                             display: "flex",
                                             flexDirection: "column",
                                             alignItems: "center",
@@ -175,6 +169,7 @@ const LoginScreen = ({ navigation }) => {
                                         }}
                                         onPress={handleSubmit}
                                         disabled={isSending}
+                                        _pressed={{ opacity: isSending ? 0.8 : 1, transform: [{ scale: 0.97 }] }}
                                     >
                                         <Typography size={width * fontSizeFactor1}>Iniciar sesión</Typography>
                                     </Button>

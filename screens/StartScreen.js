@@ -9,6 +9,26 @@ import { Dimensions } from "react-native";
 
 const { width, height } = Dimensions.get('window');
 
+const Logo = React.memo(() => (
+    <Image
+        source={logo}
+        alt="Logo"
+        style={{
+            width: width * 0.8,
+            height: "100%",
+            resizeMode: 'cover',
+            zIndex: 2,
+        }}
+    />
+));
+const Plantas = React.memo(() => (
+    <Image source={plants} alt="plantas"
+        style={{
+            width: width * 0.99,
+            resizeMode: 'cover',
+        }}
+    />
+));
 
 const StartScreen = ({ navigation }) => {
     return (
@@ -31,19 +51,10 @@ const StartScreen = ({ navigation }) => {
                                     zIndex={1}
                                 />
                                 <Center>
-                                    <Image
-                                        source={logo}
-                                        alt="Logo"
-                                        style={{
-                                            width: width * 0.8,
-                                            height: "100%",
-                                            resizeMode: 'cover',
-                                            zIndex: 2,
-                                        }}
-                                    />
+                                    <Logo />
                                 </Center>
                             </Box>
-                            <Pressable _pressed={{ bg: 'rgba(106, 156, 137, 0.6)' }}
+                            <Pressable bg={"#6A9C89"} _pressed={{ opacity: 0.8, transform: [{ scale: 0.97 }] }}
                                 onPress={() => navigation.navigate('Login')}
                                 style={{
                                     width: width * 0.69,
@@ -51,14 +62,13 @@ const StartScreen = ({ navigation }) => {
                                     display: "flex",
                                     justifyContent: "center",
                                     alignItems: "center",
-                                    backgroundColor: "#6A9C89",
                                     borderRadius: 13,
                                     marginBottom: "8%",
                                     marginTop: "9%"
                                 }}>
                                 <Typography style={{ fontSize: 21 }}>INICIAR SESIÓN</Typography>
                             </Pressable>
-                            <Pressable _pressed={{ bg: 'rgba(106, 156, 137, 0.6)' }}
+                            <Pressable bg={"#6A9C89"} _pressed={{ opacity: 0.8, transform: [{ scale: 0.97 }] }}
                                 onPress={() => navigation.navigate('Register')}
                                 style={{
                                     width: width * 0.69,
@@ -66,19 +76,13 @@ const StartScreen = ({ navigation }) => {
                                     display: "flex",
                                     justifyContent: "center",
                                     alignItems: "center",
-                                    backgroundColor: "#6A9C89",
                                     borderRadius: 13
                                 }}>
                                 <Typography style={{ fontSize: 21 }}>REGISTRAR</Typography>
                             </Pressable>
                         </Box>
                         <Box position="absolute" bottom={0} left={0} right={0}>
-                            <Image source={plants} alt="plantas"
-                                style={{
-                                    width: width * 0.99,
-                                    resizeMode: 'cover',
-                                }}
-                            />
+                            <Plantas/>
                         </Box>
                     </Box>
                 </SafeAreaView>
