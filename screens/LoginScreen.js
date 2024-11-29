@@ -20,9 +20,9 @@ const Plantas = React.memo(() => (
         source={plants}
         alt="plantas"
         style={{
-            height: "25%",
-            width: "100%",
-            resizeMode: 'stretch',
+            height: height * 0.18,
+            width: width,
+            resizeMode: 'contain',
             marginRight: "2%"
         }}
     />
@@ -32,8 +32,8 @@ const Logo = React.memo(() => (
         source={logo}
         alt="Logo1"
         style={{
-            height: "88",
-            width: "97",
+            height: height * 0.1,
+            width: width * 0.23,
             resizeMode: 'stretch',
             marginRight: "2%"
         }}

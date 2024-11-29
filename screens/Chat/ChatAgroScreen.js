@@ -17,7 +17,7 @@ const Planta_sola = React.memo(() => (
         style={{
             width: width * 0.19,
             height: height * 0.09,
-            resizeMode: 'cover',
+            resizeMode: 'contain',
         }}
     />
 ));
@@ -26,7 +26,7 @@ const Usuario_icon = React.memo(() => (
         style={{
             width: width * 0.118,
             height: height * 0.057,
-            resizeMode: 'cover',
+            resizeMode: 'contain',
         }}
     />
 ));

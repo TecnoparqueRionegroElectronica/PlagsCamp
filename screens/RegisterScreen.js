@@ -19,9 +19,9 @@ const Plantas = React.memo(() => (
         source={plants}
         alt="plantas"
         style={{
-            height: height * 0.17,
+            height: height * 0.18,
             width: width,
-            resizeMode: 'stretch',
+            resizeMode: 'contain',
             marginRight: "2%"
         }}
     />

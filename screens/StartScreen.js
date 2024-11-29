@@ -16,7 +16,7 @@ const Logo = React.memo(() => (
         style={{
             width: width * 0.8,
             height: "100%",
-            resizeMode: 'cover',
+            resizeMode: 'contain',
             zIndex: 2,
         }}
     />
@@ -25,7 +25,7 @@ const Plantas = React.memo(() => (
     <Image source={plants} alt="plantas"
         style={{
             width: width * 0.99,
-            resizeMode: 'cover',
+            resizeMode: 'contain',
         }}
     />
 ));
@@ -81,7 +81,7 @@ const StartScreen = ({ navigation }) => {
                                 <Typography style={{ fontSize: 21 }}>REGISTRAR</Typography>
                             </Pressable>
                         </Box>
-                        <Box position="absolute" bottom={0} left={0} right={0}>
+                        <Box position="absolute" bottom={-1} left={0} right={0}>
                             <Plantas/>
                         </Box>
                     </Box>

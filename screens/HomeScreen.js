@@ -18,7 +18,7 @@ const Logo = React.memo(() => (
         style={{
             height: "15%",
             width: "15%",
-            resizeMode: 'stretch',
+            resizeMode: 'contain',
             top: "5%",
             left: "3%",
             position: "absolute",
@@ -33,9 +33,9 @@ const Plantas = React.memo(() => (
         source={plants}
         alt="plantas"
         style={{
-            height: "80%",
+            height: "74%",
             width: "100%",
-            resizeMode: 'stretch',
+            resizeMode: 'contain',
             marginRight: "2%",
             zIndex: 0
         }}
@@ -47,9 +47,9 @@ const Ia_icon = React.memo(() => (
         source={ia}
         alt="icono_ia"
         style={{
-            height: "80%",
-            width: "80%",
-            resizeMode: 'stretch',
+            height: height * 0.7,
+            width: width * 0.3,
+            resizeMode: 'contain',
         }}
     />
 ));
@@ -58,14 +58,15 @@ const Campesino_icono = React.memo(() => (
         source={campesino}
         alt="icono_campesino"
         style={{
-            height: "75%",
-            width: "75%",
-            resizeMode: 'stretch',
+            height: height * 0.7,
+            width: width * 0.3,
+            resizeMode: 'contain',
         }}
     />
 ));
 
 const HomeScreen = ({ navigation }) => {
+    
     return (
         <NativeBaseProvider>
             <SafeAreaProvider>
@@ -97,7 +98,7 @@ const HomeScreen = ({ navigation }) => {
                             paddingVertical: 17,
                             paddingHorizontal: 2,
                         }}>
-                            <Typography size={19} style={{ color: "white", textAlign: "center" }}>Elige la opción que deseas para ayudarte mitigar tu plaga</Typography>
+                            <Typography size={width > 600 ? 21 : 18} style={{ color: "white", textAlign: "center" }}>Elige la opción que deseas para ayudarte mitigar tu plaga</Typography>
                         </Box>
                         <Box pt={height * 0.07} width={width} height={height * 0.26} flexDirection={"row"} justifyContent={"space-between"} px={6}>
                             <Box display={"flex"} flexDirection={"column"} justifyContent={"space-around"} alignItems={"center"}>
