@@ -15,7 +15,7 @@ import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
 import { NativeBaseProvider } from 'native-base';
 import * as NavigationBar from 'expo-navigation-bar';
-import ChatAgroScreen from './screens/ChatAgroScreen';
+import ChatAgroScreen from './screens/Chat/ChatAgroScreen';
 
 //Creamos Stack para manejar la navegacion
 const Stack = createStackNavigator();
