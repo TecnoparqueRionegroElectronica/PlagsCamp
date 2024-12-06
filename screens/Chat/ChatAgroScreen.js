@@ -9,6 +9,7 @@ import colors from "../../assets/colors/colors";
 import { FontAwesome, Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import ChatItem from "./ChatItem";
+import uploadToCloudinary from "../../Components/Cloudinary";
 
 const { width, height } = Dimensions.get('window');
 
@@ -101,17 +102,23 @@ const ChatAgroScreen = ({ navigation }) => {
 
         if (!result.canceled) {
             setPhoto(result.assets[0].uri);
-            const { uri, fileName, mimeType } = result.assets[0];
-            setChatHistory([...chatHistory, {
-                id: 3,
-                account_id: 1,
-                message: "",
-                file: {
-                    name: fileName,
-                    file: uri,
-                },
-                created: "2024-11-28T15:40:00Z",
-            }])
+            try {
+                const data = await uploadToCloudinary(result.assets[0].uri, result.assets[0].fileName, result.assets[0].mimeType);
+                console.log('Uploaded Image:', data.secure_url);
+                const { uri, fileName, mimeType } = result.assets[0];
+                setChatHistory([...chatHistory, {
+                    id: 3,
+                    account_id: 1,
+                    message: `${data.secure_url}`,
+                    file: {
+                        name: fileName,
+                        file: uri,
+                    },
+                    created: "2024-11-28T15:40:00Z",
+                }])
+            } catch (error) {
+                console.error('Upload failed:', error);
+            }
         }
     };
     const renderItem = ({ item }) => (
