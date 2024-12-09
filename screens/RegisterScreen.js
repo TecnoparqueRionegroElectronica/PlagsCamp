@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Box, NativeBaseProvider, Image, Center, FormControl, Input, Button, ScrollView, Select, CheckIcon, Text } from 'native-base';
+import React, { useCallback, useState } from "react";
+import { Box, NativeBaseProvider, Image, Center, FormControl, Input, Button, ScrollView, Select, CheckIcon, Text, useToast } from 'native-base';
 import logo from "../assets/1.png"
 import plants from "../assets/plantas_login.png"
 import Typography from '../Components/Typography';
@@ -7,6 +7,8 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { _Text, Dimensions } from "react-native";
 import colors from "../assets/colors/colors";
 import { Octicons } from "@expo/vector-icons";
+import { api } from "../sdk/consumer";
+import { resources } from "../sdk/resourse";
 
 const { width, height } = Dimensions.get('window');
 const fontSizeFactor = width > 600 ? 0.02 : 0.037;
@@ -44,6 +46,7 @@ const RegisterScreen = ({ navigation }) => {
     const [errors, setErrors] = useState({ name: false, lastName: false, email: false, password: false, phone: false, rol: false });
     const [showPassword, setShowPassword] = useState(false);
     const [isSending, setIsSending] = useState(false);
+    const toast = useToast();
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -85,8 +88,35 @@ const RegisterScreen = ({ navigation }) => {
         }
         if (validate()) {
             setIsSending(true)
+            const data = {
+                name: formValues.name,
+                email: formValues.email
+            }
+            try {
+                await api.post(`${resources.users}`, data)
+                showToast("Registro exitoso")
+                setTimeout(() => { navigation.navigate('Start') }, 1100);   
+            } catch (error) {
+                console.error('Error de data:', error.response || error.message);
+            } finally {
+                setIsSending(false)
+            }
         }
     };
+
+    const showToast = useCallback((message) => {
+        toast.show({
+          placement: "top",
+          backgroundColor: "success.500",
+          render: () => (
+            <Box bg="success.500" p={4} borderRadius="md" mx="auto" _text={{ color: "white", textAlign: "center" }}>
+              <Center>
+                <Typography size={width * 0.033} style={{ color: "#fff"}}>{message}</Typography>
+              </Center>
+            </Box>
+          ),
+        });
+      }, [toast]);
 
 
     return (
@@ -276,8 +306,8 @@ const RegisterScreen = ({ navigation }) => {
                                             isReadOnly
                                             onValueChange={(text) => setFormValues({ ...formValues, rol: text })}
                                         >
-                                            <Select.Item label="Option 1" value="option1" />
-                                            <Select.Item label="Option 2" value="option2" />
+                                            <Select.Item label="Agrónomo" value="option1" />
+                                            <Select.Item label="Administrador" value="option2" />
                                         </Select>
                                     </Box>
                                 </FormControl>

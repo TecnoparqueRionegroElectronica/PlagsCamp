@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Box, NativeBaseProvider, Image, Center, FormControl, Input, Button, ScrollView, View } from 'native-base';
+import React, { useCallback, useState } from "react";
+import { Box, NativeBaseProvider, Image, Center, FormControl, Input, Button, ScrollView, View, useToast } from 'native-base';
 import logo from "../assets/1.png"
 import plants from "../assets/plantas_login.png"
 import Typography from '../Components/Typography';
@@ -7,6 +7,10 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Dimensions } from "react-native";
 import colors from "../assets/colors/colors";
 import { Octicons } from "@expo/vector-icons";
+import { useFocusEffect } from "@react-navigation/native";
+import { api } from "../sdk/consumer";
+import { resources } from "../sdk/resourse";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get('window');
 const fontSizeFactor = width > 600 ? 0.02 : 0.037;
@@ -45,6 +49,8 @@ const LoginScreen = ({ navigation }) => {
     const [errors, setErrors] = useState({ email: false, password: false });
     const [showPassword, setShowPassword] = useState(false);
     const [isSending, setIsSending] = useState(false);
+    const [data, setData] = useState([]);
+    const toast = useToast();
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -65,6 +71,25 @@ const LoginScreen = ({ navigation }) => {
         return !newErrors.email && !newErrors.password;
     };
 
+    useFocusEffect(
+        useCallback(() => {
+            const obtener = async () => {
+                try {
+                    const response = await api.get(`${resources.users}`);
+
+                    if (response.data) {
+                        setData(response.data);
+                    }
+                } catch (error) {
+                    console.error('Error de data:', error.response || error.message);
+                } finally {
+                    setLoading(false);
+                }
+            };
+            obtener();
+        }, [navigation])
+    );
+
     const handleSubmit = async () => {
         if (isSending) {
             return;
@@ -72,13 +97,32 @@ const LoginScreen = ({ navigation }) => {
         if (validate()) {
             setIsSending(true)
             console.log(formValues)
-            setFormValues({ email: '', password: '' })
-            setErrors({});
-            setIsSending(false)
-            navigation.navigate('Home')
+            const filtro = data.filter((dato) => dato.email == formValues.email)
+            if (filtro.length > 0) {
+                await AsyncStorage.setItem('id', JSON.stringify(filtro[0].id))
+                setFormValues({ email: '', password: '' })
+                setErrors({});
+                setIsSending(false)
+                navigation.navigate('Home')
+            }else{
+                showToast("Por favor ingresar las credenciales validas.")
+            }
         }
     };
 
+    const showToast = useCallback((message) => {
+        toast.show({
+          placement: "top",
+          backgroundColor: "error.500",
+          render: () => (
+            <Box bg="error.500" p={4} borderRadius="md" mx="auto" _text={{ color: "white", textAlign: "center" }}>
+              <Center>
+                <Typography size={width * 0.033} style={{ color: "#fff" }}>{message}</Typography>
+              </Center>
+            </Box>
+          ),
+        });
+      }, [toast]);
 
     return (
         <NativeBaseProvider>
@@ -88,7 +132,7 @@ const LoginScreen = ({ navigation }) => {
                         <ScrollView>
                             <Plantas />
                             <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} alignItems={"center"} mt={height * 0.05}>
-                                <Logo/>
+                                <Logo />
                                 <Typography size={38}>Iniciar sesión</Typography>
                             </Box>
                             <Center flex={1} px="6" py="7">
