@@ -101,7 +101,6 @@ const ChatAgroScreen = ({ navigation }) => {
             const id = await AsyncStorage.getItem("id");
             const id12 = JSON.parse(id);
             setId1(id12);
-            console.log(id12)
             // Petición para obtener mensajes enviados por el usuario actual
             const responseFrom = await api.get(`${resources.message}/from/${id12}`);
 
@@ -118,7 +117,6 @@ const ChatAgroScreen = ({ navigation }) => {
                     const responseTo = await api.get(`${resources.message}/from/${idTo}`);
                     if (responseTo.data && responseTo.data.length > 0) {
                         const filtro1 = responseTo.data.filter((data) => data.id_to !== 1);
-                        console.log(filtro1)
                         const array2 = filtro1;
                         // Combinar y ordenar los mensajes
                         if (array2.length > 0) {
@@ -154,7 +152,6 @@ const ChatAgroScreen = ({ navigation }) => {
             const id = await AsyncStorage.getItem("id");
             const id12 = JSON.parse(id);
             setId1(id12);
-            console.log(id12)
             // Petición para obtener mensajes enviados por el usuario actual
             const responseFrom = await api.get(`${resources.message}/from/${id12}`);
 
@@ -165,14 +162,12 @@ const ChatAgroScreen = ({ navigation }) => {
                 if (filtro.length > 0) {
                     // Tomar el ID del primer destinatario (id_to) en el filtro
                     const idTo = filtro[0]?.id_to;
-                    console.log("idto es: ",idTo)
                     setId_to(idTo);
 
                     // Obtener mensajes enviados por el destinatario
                     const responseTo = await api.get(`${resources.message}/from/${idTo}`);
                     if (responseTo.data && responseTo.data.length > 0) {
                         const filtro1 = responseTo.data.filter((data) => data.id_to !== 1);
-                        console.log(filtro1)
                         const array2 = filtro1;
                         // Combinar y ordenar los mensajes
                         if (array2.length > 0) {
@@ -189,7 +184,6 @@ const ChatAgroScreen = ({ navigation }) => {
                         // Filtrar mensajes recibidos que no provengan de la IA
                         const filtro = responseTo.data.filter((data) => data.id_from !== 1);
                         setId_to(filtro[0]?.id_from)
-                        console.log("numero ",filtro[0]?.id_from)
                         setChatHistory(filtro);
                     } else {
                         setChatHistory([]);

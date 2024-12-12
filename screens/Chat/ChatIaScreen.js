@@ -38,17 +38,6 @@ const Ia = React.memo(() => (
     />
 ));
 
-const Usuario_icon = React.memo(() => (
-    <Image source={usuario} alt="usuario"
-        style={{
-            width: width * 0.118,
-            height: height * 0.057,
-            resizeMode: 'contain',
-        }}
-    />
-));
-
-
 const data = {
     inference_id: "212043a0-d077-4250-b735-cd71bfe70a8d",
     time: 0.28516717800084734,
@@ -202,7 +191,6 @@ const ChatIaScreen = ({ navigation }) => {
             if (responseFrom.data) {
                 const filtro = responseFrom.data.filter((data) => data.id_to == 1)
                 setId_to(filtro?.id_to)
-                console.log(filtro)
                 if (filtro?.id_to) {
                     const responseTo = await api.get(`${resources.message}/from/${filtro?.id_to}`);
                     if (responseTo.data) {
@@ -227,7 +215,6 @@ const ChatIaScreen = ({ navigation }) => {
             const responseFrom = await api.get(`${resources.message}/from/${Id1}`);
             if (responseFrom.data) {
                 setId_to(responseFrom.data[0]?.id_to)
-                console.log(responseFrom.data[0]?.id_to)
                 if (responseFrom.data[0]?.id_to) {
                     const responseTo = await api.get(`${resources.message}/from/${responseFrom.data[0]?.id_to}`);
                     if (responseTo.data) {
