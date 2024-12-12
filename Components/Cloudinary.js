@@ -10,9 +10,13 @@ const uploadToCloudinary = async (fileUri, fileName, mimeType ) => {
 
     formData.append('upload_preset', 'subir fotos');
 
+
+    // aqui se tiene que poner el Cloud name de cloudinary de su cuenta
+    const CloudName = null
+
     try {
         const response = await axios.post(
-            `https://api.cloudinary.com/v1_1/duro1tbga/image/upload`,
+            `https://api.cloudinary.com/v1_1/${CloudName}/image/upload`,
             formData,
             {
                 headers: {
