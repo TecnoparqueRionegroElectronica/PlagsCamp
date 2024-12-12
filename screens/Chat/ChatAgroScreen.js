@@ -48,29 +48,6 @@ const Usuario_icon = React.memo(() => (
     />
 ));
 
-// const chatHistory1 = [
-//     {
-//         id: 1,
-//         account_id: 2,
-//         message: "Hola, ¿cómo estás?",
-//         file: {
-//             name: "",
-//             file: null,
-//         },
-//         created: "2024-11-28T15:30:00Z",
-//     },
-//     {
-//         id: 2,
-//         account_id: 1,
-//         message: "Hola, bien y usted",
-//         file: {
-//             name: "",
-//             file: null,
-//         },
-//         created: "2024-11-28T15:30:00Z",
-//     },
-// ]
-
 const ChatAgroScreen = ({ navigation }) => {
     const [isSending, setIsSending] = useState(false)
     const [message, setMessage] = useState("")
