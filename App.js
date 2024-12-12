@@ -16,6 +16,7 @@ import HomeScreen from './screens/HomeScreen';
 import { NativeBaseProvider } from 'native-base';
 import * as NavigationBar from 'expo-navigation-bar';
 import ChatAgroScreen from './screens/Chat/ChatAgroScreen';
+import ChatIaScreen from './screens/Chat/ChatIaScreen';
 
 //Creamos Stack para manejar la navegacion
 const Stack = createStackNavigator();
@@ -42,6 +43,7 @@ export default function App() {
             <Stack.Screen name="Register" component={RegisterScreen}  />
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="ChatAgro" component={ChatAgroScreen} />
+            <Stack.Screen name="ChatIa" component={ChatIaScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </NativeBaseProvider>

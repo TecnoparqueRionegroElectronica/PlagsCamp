@@ -48,30 +48,106 @@ const Usuario_icon = React.memo(() => (
     />
 ));
 
-// const chatHistory1 = [
-//     {
-//         id: 1,
-//         account_id: 2,
-//         message: "Hola, ¿cómo estás?",
-//         file: {
-//             name: "",
-//             file: null,
-//         },
-//         created: "2024-11-28T15:30:00Z",
-//     },
-//     {
-//         id: 2,
-//         account_id: 1,
-//         message: "Hola, bien y usted",
-//         file: {
-//             name: "",
-//             file: null,
-//         },
-//         created: "2024-11-28T15:30:00Z",
-//     },
-// ]
 
-const ChatAgroScreen = ({ navigation }) => {
+const data = {
+    inference_id: "212043a0-d077-4250-b735-cd71bfe70a8d",
+    time: 0.28516717800084734,
+    image: { width: 275, height: 183 },
+    predictions: [
+        {
+            x: 169.5,
+            y: 52,
+            width: 51,
+            height: 42,
+            confidence: 0.6497458219528198,
+            class: "scab",
+            class_id: 3,
+            detection_id: "4092334a-44da-4f75-8297-b9d09a59e057"
+        },
+        {
+            x: 120.5,
+            y: 74,
+            width: 49,
+            height: 28,
+            confidence: 0.4442853033542633,
+            class: "scab",
+            class_id: 3,
+            detection_id: "0fd0acbb-ed4d-45bc-b8e6-cf981b3525e5"
+        },
+        {
+            x: 248.5,
+            y: 54,
+            width: 31,
+            height: 22,
+            confidence: 0.43552646040916443,
+            class: "blotch",
+            class_id: 0,
+            detection_id: "4d809a1e-3188-4e8f-b44a-76e8bd69e9fc"
+        },
+        {
+            x: 104.5,
+            y: 132,
+            width: 49,
+            height: 38,
+            confidence: 0.2963902950286865,
+            class: "scab",
+            class_id: 3,
+            detection_id: "ce8a67af-d6b7-47e7-b554-9155c2edf98c"
+        },
+        {
+            x: 65.5,
+            y: 16.5,
+            width: 53,
+            height: 33,
+            confidence: 0.21077492833137512,
+            class: "scab",
+            class_id: 3,
+            detection_id: "bca4a864-37eb-4b13-baaf-dff99c5c8b55"
+        },
+        {
+            x: 169,
+            y: 110.5,
+            width: 44,
+            height: 27,
+            confidence: 0.1788935661315918,
+            class: "scab",
+            class_id: 3,
+            detection_id: "e0790b28-53b3-4630-a415-3e42142a2aac"
+        },
+        {
+            x: 86.5,
+            y: 140,
+            width: 61,
+            height: 48,
+            confidence: 0.15866996347904205,
+            class: "scab",
+            class_id: 3,
+            detection_id: "c6f800d5-0b3f-4d4c-a9e0-2d0b756b728b"
+        },
+        {
+            x: 244.5,
+            y: 8.5,
+            width: 43,
+            height: 17,
+            confidence: 0.1258532702922821,
+            class: "blotch",
+            class_id: 0,
+            detection_id: "0a36bd14-03d4-4124-a7d2-8376376725b4"
+        },
+        {
+            x: 98.5,
+            y: 173.5,
+            width: 31,
+            height: 19,
+            confidence: 0.11523017287254333,
+            class: "blotch",
+            class_id: 0,
+            detection_id: "3868c476-dbc7-4b0e-9ddb-fd9096a37bc2"
+        }
+    ]
+}
+
+const ChatIaScreen = ({ navigation }) => {
     const [isSending, setIsSending] = useState(false)
     const [message, setMessage] = useState("")
     const [photo, setPhoto] = useState(null)
@@ -116,118 +192,60 @@ const ChatAgroScreen = ({ navigation }) => {
             };
         }, [obtener1])
     );
-
     const obtener = async () => {
-        setLoading(false);
+        setLoading(false)
         try {
-            // Obtener ID del usuario actual (agronomo) desde AsyncStorage
-            const id = await AsyncStorage.getItem("id");
-            const id12 = JSON.parse(id);
-            setId1(id12);
-            console.log(id12)
-            // Petición para obtener mensajes enviados por el usuario actual
+            const id = await AsyncStorage.getItem("id")
+            const id12 = JSON.parse(id)
+            setId1(id12)
             const responseFrom = await api.get(`${resources.message}/from/${id12}`);
-
-            if (responseFrom.data && responseFrom.data.length > 0) {
-                // Filtrar los mensajes excluyendo aquellos dirigidos a la IA (id: 1)
-                const filtro = responseFrom.data.filter((data) => data.id_to !== 1);
-
-                if (filtro.length > 0) {
-                    // Tomar el ID del primer destinatario (id_to) en el filtro
-                    const idTo = filtro[0]?.id_to;
-                    setId_to(idTo);
-
-                    // Obtener mensajes enviados por el destinatario
-                    const responseTo = await api.get(`${resources.message}/from/${idTo}`);
-                    if (responseTo.data && responseTo.data.length > 0) {
-                        const filtro1 = responseTo.data.filter((data) => data.id_to !== 1);
-                        console.log(filtro1)
-                        const array2 = filtro1;
-                        // Combinar y ordenar los mensajes
-                        if (array2.length > 0) {
-                            const combinedArray = [...filtro, ...array2].sort((a, b) => new Date(a.date) - new Date(b.date));
-                            setChatHistory(combinedArray);
-                        } else {
-                            setChatHistory(filtro)
-                        }
+            if (responseFrom.data) {
+                const filtro = responseFrom.data.filter((data) => data.id_to == 1)
+                setId_to(filtro?.id_to)
+                console.log(filtro)
+                if (filtro?.id_to) {
+                    const responseTo = await api.get(`${resources.message}/from/${filtro?.id_to}`);
+                    if (responseTo.data) {
+                        const filtro1 = responseFrom.data.filter((data) => data.id_to == id12)
+                        const array2 = filtro1
+                        const array1 = filtro
+                        const combinedArray = [...array1, ...array2].sort((a, b) => a.date - b.date);
+                        setChatHistory(combinedArray)
                     }
                 } else {
-                    // Si no hay mensajes enviados, buscar los recibidos
-                    const responseTo = await api.get(`${resources.message}/to/${id12}`);
-                    if (responseTo.data && responseTo.data.length > 0) {
-                        // Filtrar mensajes recibidos que no provengan de la IA
-                        const filtro = responseTo.data.filter((data) => data.id_from !== 1);
-                        setChatHistory(filtro);
-                    } else {
-                        setChatHistory([]);
-                    }
+                    setChatHistory(filtro)
                 }
             }
         } catch (error) {
-            console.error("Error de data:", error.response || error.message);
+            console.error('Error de data:', error.response || error.message);
         } finally {
             setLoading(true);
         }
     };
-
-
     const obtener1 = async () => {
         try {
-            // Obtener ID del usuario actual (agronomo) desde AsyncStorage
-            const id = await AsyncStorage.getItem("id");
-            const id12 = JSON.parse(id);
-            setId1(id12);
-            console.log(id12)
-            // Petición para obtener mensajes enviados por el usuario actual
-            const responseFrom = await api.get(`${resources.message}/from/${id12}`);
-
-            if (responseFrom.data && responseFrom.data.length > 0) {
-                // Filtrar los mensajes excluyendo aquellos dirigidos a la IA (id: 1)
-                const filtro = responseFrom.data.filter((data) => data.id_to !== 1);
-
-                if (filtro.length > 0) {
-                    // Tomar el ID del primer destinatario (id_to) en el filtro
-                    const idTo = filtro[0]?.id_to;
-                    console.log("idto es: ",idTo)
-                    setId_to(idTo);
-
-                    // Obtener mensajes enviados por el destinatario
-                    const responseTo = await api.get(`${resources.message}/from/${idTo}`);
-                    if (responseTo.data && responseTo.data.length > 0) {
-                        const filtro1 = responseTo.data.filter((data) => data.id_to !== 1);
-                        console.log(filtro1)
-                        const array2 = filtro1;
-                        // Combinar y ordenar los mensajes
-                        if (array2.length > 0) {
-                            const combinedArray = [...filtro, ...array2].sort((a, b) => new Date(a.date) - new Date(b.date));
-                            setChatHistory(combinedArray);
-                        } else {
-                            setChatHistory(filtro)
-                        }
-                    }
-                } else {
-                    // Si no hay mensajes enviados, buscar los recibidos
-                    const responseTo = await api.get(`${resources.message}/to/${id12}`);
-                    if (responseTo.data && responseTo.data.length > 0) {
-                        // Filtrar mensajes recibidos que no provengan de la IA
-                        const filtro = responseTo.data.filter((data) => data.id_from !== 1);
-                        setId_to(filtro[0]?.id_from)
-                        console.log("numero ",filtro[0]?.id_from)
-                        setChatHistory(filtro);
-                    } else {
-                        setChatHistory([]);
+            const responseFrom = await api.get(`${resources.message}/from/${Id1}`);
+            if (responseFrom.data) {
+                setId_to(responseFrom.data[0]?.id_to)
+                console.log(responseFrom.data[0]?.id_to)
+                if (responseFrom.data[0]?.id_to) {
+                    const responseTo = await api.get(`${resources.message}/from/${responseFrom.data[0]?.id_to}`);
+                    if (responseTo.data) {
+                        const array2 = responseTo.data
+                        const array1 = responseFrom.data
+                        const combinedArray = [...array1, ...array2].sort((a, b) => a.date - b.date);
+                        setChatHistory(combinedArray)
                     }
                 }
             }
         } catch (error) {
-            console.error("Error de data:", error.response || error.message);
+            console.error('Error de data:', error.response || error.message);
         }
     };
 
     useEffect(() => {
         obtener()
     }, [])
-
 
     const comprobar = async () => {
         const mensaje = message.replace(/^\s+/, '');
@@ -255,7 +273,7 @@ const ChatAgroScreen = ({ navigation }) => {
                 const data1 = await uploadToCloudinary(secure_url.uri, secure_url.fileName, secure_url.mimeType);
                 data = {
                     id_from: Id1,
-                    id_to: id_to !== null ? id_to : 2,
+                    id_to: id_to == null ? id_to : 2,
                     text: message ? message : null,
                     image_url: data1.secure_url ? data1.secure_url : null
                 }
@@ -263,7 +281,7 @@ const ChatAgroScreen = ({ navigation }) => {
             } else {
                 data = {
                     id_from: Id1,
-                    id_to: id_to !== null ? id_to : 2,
+                    id_to: id_to == null ? id_to : 2,
                     text: message ? message : null,
                     image_url: null
                 }
@@ -332,9 +350,9 @@ const ChatAgroScreen = ({ navigation }) => {
                                 </Pressable>
                             </Box>
                             <Box position={"absolute"} top={"20%"} left={"10%"}>
-                                <Box width={"63%"} display={"flex"} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
-                                    <Usuario_icon />
-                                    <Typography size={18} style={{ color: colors.brown }}>Agrónomo</Typography>
+                                <Box width={"80%"} display={"flex"} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
+                                    <Ia />
+                                    <Typography size={18} style={{ color: colors.brown }}>Inteligencia Artificial</Typography>
                                 </Box>
                             </Box>
                             <Box position={"absolute"} top={-7} right={-10}>
@@ -472,4 +490,4 @@ const ChatAgroScreen = ({ navigation }) => {
     )
 }
 
-export default ChatAgroScreen;
+export default ChatIaScreen;

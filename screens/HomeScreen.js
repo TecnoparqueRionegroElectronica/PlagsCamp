@@ -102,7 +102,7 @@ const HomeScreen = ({ navigation }) => {
                         </Box>
                         <Box pt={height * 0.07} width={width} height={height * 0.26} flexDirection={"row"} justifyContent={"space-between"} px={6}>
                             <Box display={"flex"} flexDirection={"column"} justifyContent={"space-around"} alignItems={"center"}>
-                                <Pressable onPress={()=>navigation.navigate('ChatAgro', { name: "ia" })} _pressed={{ opacity: 0.8, transform: [{ scale: 0.97 }], }} display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} width={width * 0.4} height={"100%"}
+                                <Pressable onPress={()=>navigation.navigate('ChatIa',)} _pressed={{ opacity: 0.8, transform: [{ scale: 0.97 }], }} display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} width={width * 0.4} height={"100%"}
                                     style={{
                                         backgroundColor: colors.green,
                                         borderRadius: 20
@@ -115,7 +115,7 @@ const HomeScreen = ({ navigation }) => {
                                 </Box>
                             </Box>
                             <Box display={"flex"} flexDirection={"column"} justifyContent={"space-between"} alignItems={"center"}>
-                                <Pressable onPress={()=>navigation.navigate('ChatAgro', { name: "agronomo" })} _pressed={{ opacity: 0.8, transform: [{ scale: 0.97 }] }} display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} width={width * 0.4} height={"100%"}
+                                <Pressable onPress={()=>navigation.navigate('ChatAgro')} _pressed={{ opacity: 0.8, transform: [{ scale: 0.97 }] }} display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} width={width * 0.4} height={"100%"}
                                     style={{
                                         backgroundColor: colors.green,
                                         borderRadius: 20
