@@ -52,7 +52,7 @@ const ChatItem = ({ chat, cuenta, fontSizeFactor, fontSizeFactor3 }) => {
                         marginBottom: chat?.image_url && chat?.text ? 10 : 0,
                     }}
                 >
-                    {chat?.text}
+                    {chat?.processedText}
                 </Typography>
 
                 {chat?.image_url !== null && (

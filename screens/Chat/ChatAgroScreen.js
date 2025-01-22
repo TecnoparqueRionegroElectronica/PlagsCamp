@@ -230,7 +230,7 @@ const ChatAgroScreen = ({ navigation }) => {
                     text: message ? message : null,
                     image_url: data1.secure_url ? data1.secure_url : null
                 }
-                const responseFrom = await api.post(`${resources.message}`, data);
+                await api.post(`${resources.message}`, data);
             } else {
                 data = {
                     id_from: Id1,
@@ -238,7 +238,7 @@ const ChatAgroScreen = ({ navigation }) => {
                     text: message ? message : null,
                     image_url: null
                 }
-                const responseFrom = await api.post(`${resources.message}`, data);
+                await api.post(`${resources.message}`, data);
             }
             setSecure_url(null)
             setPhoto(null)

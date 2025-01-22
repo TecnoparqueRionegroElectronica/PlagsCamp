@@ -1,4 +1,5 @@
 export const resources = {
     users: "users",
-    message: "messages"
+    message: "messages",
+    messageIa: "messages/ia"
 }

@@ -11,8 +11,8 @@ const uploadToCloudinary = async (fileUri, fileName, mimeType ) => {
     formData.append('upload_preset', 'subir fotos');
 
 
-    // aqui se tiene que poner el Cloud name de cloudinary de su cuenta
-    const CloudName = null
+    // aqui se tiene que poner el Cloud name de cloudinary de su cuenta. Sin esto no funcionará el guardado en la nube de cloudinary
+    const CloudName = ""
 
     try {
         const response = await axios.post(
