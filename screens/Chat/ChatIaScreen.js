@@ -3,18 +3,17 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Box, NativeBaseProvider, Image, Pressable, VStack, HStack, Input, Spinner } from 'native-base';
 import planta_sola from "../../assets/planta_sola.png"
 import ia_icono from "../../assets/ia_icono_chat.png"
-import usuario from "../../assets/usuario.png";
 import Typography from '../../Components/Typography';
-import { AppState, Dimensions, VirtualizedList } from "react-native";
+import { AppState, Dimensions, VirtualizedList, Alert } from "react-native";
 import colors from "../../assets/colors/colors";
 import { FontAwesome, Entypo, Ionicons, MaterialIcons, AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import ChatItem from "./ChatItem";
 import uploadToCloudinary from "../../Components/Cloudinary";
 import { useFocusEffect } from "@react-navigation/native";
 import { resources } from "../../sdk/resourse";
 import { api } from "../../sdk/consumer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import ChatItemIa from "./ChatItemIa";
 
 const { width, height } = Dimensions.get('window');
 
@@ -38,104 +37,6 @@ const Ia = React.memo(() => (
     />
 ));
 
-const data = {
-    inference_id: "212043a0-d077-4250-b735-cd71bfe70a8d",
-    time: 0.28516717800084734,
-    image: { width: 275, height: 183 },
-    predictions: [
-        {
-            x: 169.5,
-            y: 52,
-            width: 51,
-            height: 42,
-            confidence: 0.6497458219528198,
-            class: "scab",
-            class_id: 3,
-            detection_id: "4092334a-44da-4f75-8297-b9d09a59e057"
-        },
-        {
-            x: 120.5,
-            y: 74,
-            width: 49,
-            height: 28,
-            confidence: 0.4442853033542633,
-            class: "scab",
-            class_id: 3,
-            detection_id: "0fd0acbb-ed4d-45bc-b8e6-cf981b3525e5"
-        },
-        {
-            x: 248.5,
-            y: 54,
-            width: 31,
-            height: 22,
-            confidence: 0.43552646040916443,
-            class: "blotch",
-            class_id: 0,
-            detection_id: "4d809a1e-3188-4e8f-b44a-76e8bd69e9fc"
-        },
-        {
-            x: 104.5,
-            y: 132,
-            width: 49,
-            height: 38,
-            confidence: 0.2963902950286865,
-            class: "scab",
-            class_id: 3,
-            detection_id: "ce8a67af-d6b7-47e7-b554-9155c2edf98c"
-        },
-        {
-            x: 65.5,
-            y: 16.5,
-            width: 53,
-            height: 33,
-            confidence: 0.21077492833137512,
-            class: "scab",
-            class_id: 3,
-            detection_id: "bca4a864-37eb-4b13-baaf-dff99c5c8b55"
-        },
-        {
-            x: 169,
-            y: 110.5,
-            width: 44,
-            height: 27,
-            confidence: 0.1788935661315918,
-            class: "scab",
-            class_id: 3,
-            detection_id: "e0790b28-53b3-4630-a415-3e42142a2aac"
-        },
-        {
-            x: 86.5,
-            y: 140,
-            width: 61,
-            height: 48,
-            confidence: 0.15866996347904205,
-            class: "scab",
-            class_id: 3,
-            detection_id: "c6f800d5-0b3f-4d4c-a9e0-2d0b756b728b"
-        },
-        {
-            x: 244.5,
-            y: 8.5,
-            width: 43,
-            height: 17,
-            confidence: 0.1258532702922821,
-            class: "blotch",
-            class_id: 0,
-            detection_id: "0a36bd14-03d4-4124-a7d2-8376376725b4"
-        },
-        {
-            x: 98.5,
-            y: 173.5,
-            width: 31,
-            height: 19,
-            confidence: 0.11523017287254333,
-            class: "blotch",
-            class_id: 0,
-            detection_id: "3868c476-dbc7-4b0e-9ddb-fd9096a37bc2"
-        }
-    ]
-}
-
 const ChatIaScreen = ({ navigation }) => {
     const [isSending, setIsSending] = useState(false)
     const [message, setMessage] = useState("")
@@ -146,7 +47,6 @@ const ChatIaScreen = ({ navigation }) => {
     const [id_to, setId_to] = useState(null)
     const [secure_url, setSecure_url] = useState(null)
     const [isModalVisible1, setIsModalVisible1] = useState(false)
-    const appState = useRef(AppState.currentState);
 
     const { fontSizeFactor, fontSizeFactor1, fontSizeFactor2, fontSizeFactor3, sizeIcon, sizeIcon1, sizeCell, sizeCell1, sizeIcon2 } = useMemo(() => {
         const factor = width > 600 ? 0.021 : 0.033;
@@ -162,25 +62,6 @@ const ChatIaScreen = ({ navigation }) => {
             sizeIcon2: width > 600 ? 0.035 : 0.05,
         };
     }, [width]);
-
-    useFocusEffect(
-        useCallback(() => {
-            let timeoutId = null;
-
-            const checkAppStateAndFetch = () => {
-                if (appState.current === 'active') {
-                    obtener1();
-                    timeoutId = setTimeout(checkAppStateAndFetch, 4400);
-                }
-            };
-
-            checkAppStateAndFetch();
-
-            return () => {
-                if (timeoutId) clearTimeout(timeoutId);
-            };
-        }, [obtener1])
-    );
     const obtener = async () => {
         setLoading(false)
         try {
@@ -188,20 +69,30 @@ const ChatIaScreen = ({ navigation }) => {
             const id12 = JSON.parse(id)
             setId1(id12)
             const responseFrom = await api.get(`${resources.message}/from/${id12}`);
+            const responseIa = await api.get(`${resources.message}/from/1`);
             if (responseFrom.data) {
                 const filtro = responseFrom.data.filter((data) => data.id_to == 1)
+                const filtro1 = responseIa.data.filter((data) => data.id_to == id12)
                 setId_to(filtro?.id_to)
-                if (filtro?.id_to) {
-                    const responseTo = await api.get(`${resources.message}/from/${filtro?.id_to}`);
-                    if (responseTo.data) {
-                        const filtro1 = responseFrom.data.filter((data) => data.id_to == id12)
-                        const array2 = filtro1
-                        const array1 = filtro
-                        const combinedArray = [...array1, ...array2].sort((a, b) => a.date - b.date);
-                        setChatHistory(combinedArray)
-                    }
+                if (filtro.length > 0 && filtro1.length > 0) {
+                    const array2 = filtro
+                    const array1 = filtro1
+                    const combinedArray = [...array1, ...array2].sort((a, b) => a.date - b.date);
+                    const chatsWithProcessedText = await Promise.all(
+                        combinedArray.map(async (chat) => ({
+                            ...chat,
+                            processedText: await processChatText(chat),
+                        }))
+                    );
+                    setChatHistory(chatsWithProcessedText)
                 } else {
-                    setChatHistory(filtro)
+                    const chatsWithProcessedText = await Promise.all(
+                        filtro.map(async (chat) => ({
+                            ...chat,
+                            processedText: await processChatText(chat),
+                        }))
+                    );
+                    setChatHistory(chatsWithProcessedText)
                 }
             }
         } catch (error) {
@@ -210,19 +101,34 @@ const ChatIaScreen = ({ navigation }) => {
             setLoading(true);
         }
     };
+
     const obtener1 = async () => {
         try {
             const responseFrom = await api.get(`${resources.message}/from/${Id1}`);
+            const responseIa = await api.get(`${resources.message}/from/1`);
             if (responseFrom.data) {
-                setId_to(responseFrom.data[0]?.id_to)
-                if (responseFrom.data[0]?.id_to) {
-                    const responseTo = await api.get(`${resources.message}/from/${responseFrom.data[0]?.id_to}`);
-                    if (responseTo.data) {
-                        const array2 = responseTo.data
-                        const array1 = responseFrom.data
-                        const combinedArray = [...array1, ...array2].sort((a, b) => a.date - b.date);
-                        setChatHistory(combinedArray)
-                    }
+                const filtro = responseFrom.data.filter((data) => data.id_to == 1)
+                const filtro1 = responseIa.data.filter((data) => data.id_to == Id1)
+                setId_to(filtro?.id_to)
+                if (filtro.length > 0 && filtro1.length > 0) {
+                    const array2 = filtro
+                    const array1 = filtro1
+                    const combinedArray = [...array1, ...array2].sort((a, b) => a.date - b.date);
+                    const chatsWithProcessedText = await Promise.all(
+                        combinedArray.map(async (chat) => ({
+                            ...chat,
+                            processedText: await processChatText(chat),
+                        }))
+                    );
+                    setChatHistory(chatsWithProcessedText)
+                } else {
+                    const chatsWithProcessedText = await Promise.all(
+                        filtro.map(async (chat) => ({
+                            ...chat,
+                            processedText: await processChatText(chat),
+                        }))
+                    );
+                    setChatHistory(chatsWithProcessedText)
                 }
             }
         } catch (error) {
@@ -260,24 +166,24 @@ const ChatIaScreen = ({ navigation }) => {
                 const data1 = await uploadToCloudinary(secure_url.uri, secure_url.fileName, secure_url.mimeType);
                 data = {
                     id_from: Id1,
-                    id_to: id_to == null ? id_to : 2,
-                    text: message ? message : null,
+                    id_to: 1,
+                    text: message ? message : "",
                     image_url: data1.secure_url ? data1.secure_url : null
                 }
-                const responseFrom = await api.post(`${resources.message}`, data);
+                await api.post(`${resources.messageIa}`, data);
             } else {
                 data = {
                     id_from: Id1,
-                    id_to: id_to == null ? id_to : 2,
-                    text: message ? message : null,
+                    id_to: 1,
+                    text: message ? message : "",
                     image_url: null
                 }
-                const responseFrom = await api.post(`${resources.message}`, data);
+                await api.post(`${resources.messageIa}`, data);
             }
             setSecure_url(null)
             setPhoto(null)
             setMessage("")
-            obtener()
+            obtener1()
         } catch (error) {
             console.error('Error de data:', error.response || error.message);
         } finally {
@@ -291,6 +197,18 @@ const ChatIaScreen = ({ navigation }) => {
             alert("Se necesitan permisos para usar la cámara.");
             return;
         }
+        const action = await Alert.alert(
+            "Seleccionar imagen",
+            "¿Quieres tomar una foto o seleccionar de la galería?",
+            [
+                { text: "Tomar foto", onPress: async () => await launchCamera() },
+                { text: "Seleccionar de la galería", onPress: async () => await launchGallery() },
+                { text: "Cancelar", style: "cancel" }
+            ]
+        );
+    };
+
+    const launchCamera = async () => {
         const result = await ImagePicker.launchCameraAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true
@@ -298,9 +216,23 @@ const ChatIaScreen = ({ navigation }) => {
 
         if (!result.canceled) {
             setPhoto(result.assets[0].uri);
-            console.log(photo)
-            setSecure_url({ uri: result.assets[0].uri, fileName: result.assets[0].fileName, mimeType: result.assets[0].mimeType })
-            setIsModalVisible1(true)
+            console.log(result.assets[0].uri);
+            setSecure_url({ uri: result.assets[0].uri, fileName: result.assets[0].fileName, mimeType: result.assets[0].mimeType });
+            setIsModalVisible1(true);
+        }
+    };
+
+    const launchGallery = async () => {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true
+        });
+
+        if (!result.canceled) {
+            setPhoto(result.assets[0].uri);
+            console.log(result.assets[0].uri);
+            setSecure_url({ uri: result.assets[0].uri, fileName: result.assets[0].fileName, mimeType: result.assets[0].mimeType });
+            setIsModalVisible1(true);
         }
     };
 
@@ -309,9 +241,51 @@ const ChatIaScreen = ({ navigation }) => {
         setPhoto(null)
     }, []);
 
+    const processChatText = async (chat) => {
+        let classNames = [];
+        let healthy = false;
+        if (typeof chat?.text === "object" && Array.isArray(chat?.text?.predictions)) {
+            chat.text.predictions.forEach(prediction => {
+                classNames.push(prediction.class);
+            });
+            if (classNames.length==0){
+                return "No se encontraron plagas"
+            }
+            classNames = classNames.filter((value, index, self) => {
+                return self.indexOf(value) === index;
+            });
+            classNames = classNames.map(name => {
+                if (name.includes("scab")) {
+                    return "Costra"
+                } else if (name.includes("blotch")) {
+                    return "Mancha"
+                } else if (name.includes("rotten")) {
+                    return "Podrido"
+                } else if (name.includes("healthy")){
+                    healthy = true
+                    return "Saludable"
+                }else {
+                    return name
+                }
+            });
+            if (healthy){
+                const result = "La planta está saludable"
+                return result;
+            }else if (classNames.length > 1) {
+                const result = "Las plagas que se detectaron en la planta son: " + classNames.join(", ");
+                return result;
+            } else {
+                const result = "La plaga que se detectó en la planta es: " + classNames.join(", ");
+                return result;
+            }
+        } else {
+            return chat?.text;
+        }
+    };
+
     const renderItem = ({ item }) => (
         <VStack px={4} py={2} flex={1}>
-            <ChatItem
+            <ChatItemIa
                 chat={item}
                 cuenta={Id1}
                 fontSizeFactor={fontSizeFactor}
